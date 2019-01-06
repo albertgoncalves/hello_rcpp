@@ -16,7 +16,7 @@ int count_changes(NumericVector obs) {
     int n_unique = 1;
 
     for (int i = 0; i < (len_obs - 1); ++i) {
-        if (obs[i] != obs [i + 1]) {
+        if (obs[i] != obs[i + 1]) {
             n_unique++;
         }
     }
