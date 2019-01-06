@@ -11,23 +11,25 @@ NumericVector stl_sort(NumericVector x) {
 }
 
 // [[Rcpp::export]]
-int count_unique(NumericVector obs) {
+int count_changes(NumericVector obs) {
     int len_obs = obs.size();
-    int n_unique = 0;
+    int n_unique = 1;
 
-    for (int i = 0; i < len_obs; ++i) {
+    for (int i = 0; i < (len_obs - 1); ++i) {
         if (obs[i] != obs [i + 1]) {
             n_unique++;
         }
     }
+
     return n_unique;
 }
 
 // [[Rcpp::export]]
 IntegerVector element_frequency(NumericVector obs) {
-    obs = stl_sort(obs);
     int len_obs = obs.size() - 1;
-    int n_unique = count_unique(obs);
+
+    obs = stl_sort(obs);
+    int n_unique = count_changes(obs);
 
     int count = 1;
     int pos = 0;
@@ -59,6 +61,7 @@ IntegerVector singles_array(int start, int n) {
         a[i] = inc;
         inc++;
     }
+
     return a;
 }
 
