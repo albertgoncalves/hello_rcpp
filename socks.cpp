@@ -4,10 +4,8 @@ using namespace Rcpp;
 // via http://adv-r.had.co.nz/Rcpp.html
 
 // [[Rcpp::export]]
-IntegerVector stl_sort(IntegerVector x) {
-    IntegerVector y = clone(x);
-    std::sort(y.begin(), y.end());
-    return y;
+void stl_sort(IntegerVector x) {
+    std::sort(x.begin(), x.end());
 }
 
 // [[Rcpp::export]]
@@ -28,7 +26,7 @@ int count_changes(IntegerVector obs) {
 IntegerVector element_frequency(IntegerVector obs) {
     int len_obs = obs.size() - 1;
 
-    obs = stl_sort(obs);
+    stl_sort(obs);
     int n_unique = count_changes(obs);
 
     int count = 1;
@@ -110,8 +108,8 @@ bool compare_arrays(IntegerVector a, IntegerVector b, bool sort) {
     }
 
     if (sort) {
-        a = stl_sort(a);
-        b = stl_sort(b);
+        stl_sort(a);
+        stl_sort(b);
     }
 
     for (int i = 0; i < n_a; ++i) {
@@ -136,7 +134,7 @@ int sim(IntegerVector y) {
         IntegerVector obs = sample(collection, sum(y), true);
         IntegerVector freq = element_frequency(obs);
 
-        if (compare_arrays(freq, y, true)) {
+        if (compare_arrays(freq, y, false)) {
             return (n_pairs * 2) + n_singles;
         }
     }
