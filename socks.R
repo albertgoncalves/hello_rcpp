@@ -10,10 +10,8 @@ main = function() {
     n = 1000000L
 
     sims = n_sims(n, y)
-    sims = sims[sims > 0L]
-    n_sims = length(sims)
 
-    if (n_sims > 0L)
+    if (length(sims) > 0L)
         hist(sims)
 }
 

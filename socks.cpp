@@ -75,7 +75,7 @@ IntegerVector pairs_array(int start, int n) {
     for (int i = 0; i < n; ++i) {
         a[j] = inc;
         a[j + 1] = inc;
-        j = j + 2;
+        j += 2;
         inc++;
     }
 
@@ -152,5 +152,5 @@ IntegerVector n_sims(int n, IntegerVector y) {
         sims[i] = sim(y);
     }
 
-    return sims;
+    return sims[sims > 0];
 }
