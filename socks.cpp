@@ -109,6 +109,9 @@ bool compare_arrays(IntegerVector a, IntegerVector b) {
         return false;
     }
 
+    a = stl_sort(a);
+    b = stl_sort(b);
+
     for (int i = 0; i < n_a; ++i) {
         if (a[i] != b[i]) {
             return false;
@@ -128,7 +131,7 @@ int sim(IntegerVector y) {
         int n_singles = R::rpois(n_pairs * theta_ratio);
         IntegerVector collection = concat_socks(n_pairs, n_singles);
         int m = (n_pairs * 2) + n_singles;
-        IntegerVector obs = sample(collection, 11, true);
+        IntegerVector obs = sample(collection, sum(y), true);
         IntegerVector freq = element_frequency(obs);
         if (compare_arrays(freq, y)) {
             return m;
