@@ -1,6 +1,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+// via http://adv-r.had.co.nz/Rcpp.html
+
 // [[Rcpp::export]]
 NumericVector stl_sort(NumericVector x) {
     NumericVector y = clone(x);
