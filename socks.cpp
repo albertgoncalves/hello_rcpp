@@ -102,15 +102,17 @@ IntegerVector concat_socks(int n_pairs, int n_singles) {
 }
 
 // [[Rcpp::export]]
-bool compare_arrays(IntegerVector a, IntegerVector b) {
+bool compare_arrays(IntegerVector a, IntegerVector b, bool sort) {
     int n_a = a.size();
 
     if (n_a != b.size()) {
         return false;
     }
 
-    a = stl_sort(a);
-    b = stl_sort(b);
+    if (sort) {
+        a = stl_sort(a);
+        b = stl_sort(b);
+    }
 
     for (int i = 0; i < n_a; ++i) {
         if (a[i] != b[i]) {
@@ -124,17 +126,18 @@ bool compare_arrays(IntegerVector a, IntegerVector b) {
 // [[Rcpp::export]]
 int sim(IntegerVector y) {
     double theta_pairs = R::runif(10.0, 20.0);
-    double theta_ratio = R::runif(0.0, 0.25);
     int n_pairs = R::rpois(theta_pairs);
 
     if (n_pairs != 0) {
+        double theta_ratio = R::runif(0.0, 0.25);
         int n_singles = R::rpois(n_pairs * theta_ratio);
+
         IntegerVector collection = concat_socks(n_pairs, n_singles);
-        int m = (n_pairs * 2) + n_singles;
         IntegerVector obs = sample(collection, sum(y), true);
         IntegerVector freq = element_frequency(obs);
-        if (compare_arrays(freq, y)) {
-            return m;
+
+        if (compare_arrays(freq, y, true)) {
+            return (n_pairs * 2) + n_singles;
         }
     }
 
