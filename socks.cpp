@@ -4,14 +4,14 @@ using namespace Rcpp;
 // via http://adv-r.had.co.nz/Rcpp.html
 
 // [[Rcpp::export]]
-NumericVector stl_sort(NumericVector x) {
-    NumericVector y = clone(x);
+IntegerVector stl_sort(IntegerVector x) {
+    IntegerVector y = clone(x);
     std::sort(y.begin(), y.end());
     return y;
 }
 
 // [[Rcpp::export]]
-int count_changes(NumericVector obs) {
+int count_changes(IntegerVector obs) {
     int len_obs = obs.size();
     int n_unique = 1;
 
@@ -25,7 +25,7 @@ int count_changes(NumericVector obs) {
 }
 
 // [[Rcpp::export]]
-IntegerVector element_frequency(NumericVector obs) {
+IntegerVector element_frequency(IntegerVector obs) {
     int len_obs = obs.size() - 1;
 
     obs = stl_sort(obs);
@@ -83,6 +83,25 @@ IntegerVector pairs_array(int start, int n) {
 }
 
 // [[Rcpp::export]]
+IntegerVector concat_socks(int n_pairs, int n_singles) {
+    IntegerVector singles = singles_array(1, n_singles);
+    IntegerVector pairs = pairs_array(n_singles + 1, n_pairs);
+    int m_pairs = n_pairs * 2;
+    int m = m_pairs + n_singles;
+    IntegerVector socks(m);
+
+    for (int i = 0; i < n_singles; ++i) {
+        socks[i] = singles[i];
+    }
+
+    for (int i = 0; i < m_pairs; ++i) {
+        socks[i + n_singles] = pairs[i];
+    }
+
+    return socks;
+}
+
+// [[Rcpp::export]]
 bool compare_arrays(IntegerVector a, IntegerVector b) {
     int n_a = a.size();
 
@@ -97,4 +116,35 @@ bool compare_arrays(IntegerVector a, IntegerVector b) {
     }
 
     return true;
+}
+
+// [[Rcpp::export]]
+int sim(IntegerVector y) {
+    double theta_pairs = R::runif(10.0, 20.0);
+    double theta_ratio = R::runif(0.0, 0.25);
+    int n_pairs = R::rpois(theta_pairs);
+
+    if (n_pairs != 0) {
+        int n_singles = R::rpois(n_pairs * theta_ratio);
+        IntegerVector collection = concat_socks(n_pairs, n_singles);
+        int m = (n_pairs * 2) + n_singles;
+        IntegerVector obs = sample(collection, 11, true);
+        IntegerVector freq = element_frequency(obs);
+        if (compare_arrays(freq, y)) {
+            return m;
+        }
+    }
+
+    return 0;
+}
+
+// [[Rcpp::export]]
+IntegerVector n_sims(int n, IntegerVector y) {
+    IntegerVector sims(n);
+
+    for (int i = 0; i < n; ++i) {
+        sims[i] = sim(y);
+    }
+
+    return sims;
 }
