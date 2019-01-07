@@ -5,8 +5,10 @@ with pkgs; mkShell {
     shellHook = ''
         . ~/miniconda3/etc/profile.d/conda.sh
 
+        cd src/
         env=Rcpp
         sh install_env.sh $env
         conda activate $env
+        cd ../
     '';
 }

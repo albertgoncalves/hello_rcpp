@@ -3,4 +3,5 @@
 !*.sh
 !*.R
 !*.cpp
-!shell.nix
+!*.nix
+!src
