@@ -126,7 +126,7 @@ int sim(IntegerVector y) {
     int n_pairs = R::rpois(theta_pairs);
 
     if (n_pairs != 0) {
-        double theta_ratio = R::runif(0.0, 0.25);
+        double theta_ratio = R::rbeta(1.2, 5.0);
         int n_singles = R::rpois(n_pairs * theta_ratio);
         int m_pairs = n_pairs * 2;
         int total = m_pairs + n_singles;
