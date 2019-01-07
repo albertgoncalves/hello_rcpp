@@ -39,7 +39,7 @@ IntegerVector element_frequency(IntegerVector obs) {
             count++;
         } else {
             freq[pos] = count;
-            running_sum = running_sum + count;
+            running_sum += count;
             pos++;
             count = 1;
         }
@@ -81,12 +81,11 @@ IntegerVector pairs_array(int start, int n) {
 }
 
 // [[Rcpp::export]]
-IntegerVector concat_socks(int n_pairs, int n_singles) {
+IntegerVector concat_socks( int n_pairs, int n_singles, int m_pairs
+                          , int total) {
     IntegerVector singles = singles_array(1, n_singles);
     IntegerVector pairs = pairs_array(n_singles + 1, n_pairs);
-    int m_pairs = n_pairs * 2;
-    int m = m_pairs + n_singles;
-    IntegerVector socks(m);
+    IntegerVector socks(total);
 
     for (int i = 0; i < n_singles; ++i) {
         socks[i] = singles[i];
@@ -129,13 +128,15 @@ int sim(IntegerVector y) {
     if (n_pairs != 0) {
         double theta_ratio = R::runif(0.0, 0.25);
         int n_singles = R::rpois(n_pairs * theta_ratio);
+        int m_pairs = n_pairs * 2;
+        int total = m_pairs + n_singles;
 
-        IntegerVector collection = concat_socks(n_pairs, n_singles);
-        IntegerVector obs = sample(collection, sum(y), true);
+        IntegerVector socks = concat_socks(n_pairs, n_singles, m_pairs, total);
+        IntegerVector obs = sample(socks, sum(y), true);
         IntegerVector freq = element_frequency(obs);
 
         if (compare_arrays(freq, y, false)) {
-            return (n_pairs * 2) + n_singles;
+            return total;
         }
     }
 
