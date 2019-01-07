@@ -28,10 +28,10 @@ IntegerVector element_frequency(IntegerVector obs) {
 
     stl_sort(obs);
     int n_unique = count_changes(obs);
+    IntegerVector freq(n_unique);
 
     int count = 1;
     int pos = 0;
-    IntegerVector freq(n_unique);
     int running_sum = 0;
 
     for (int i = 0; i < len_obs; ++i) {
