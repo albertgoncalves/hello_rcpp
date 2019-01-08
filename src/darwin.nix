@@ -10,5 +10,8 @@ with pkgs; mkShell {
         sh install_env.sh $env
         conda activate $env
         cd ../
+
+        alias ls='ls --color=auto'
+        alias ll='ls -al'
     '';
 }
