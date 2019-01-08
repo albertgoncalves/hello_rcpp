@@ -15,7 +15,7 @@ int count_changes(IntegerVector obs) {
 
     for (int i = 0; i < (len_obs - 1); ++i) {
         if (obs[i] != obs[i + 1]) {
-            n_unique++;
+            ++n_unique;
         }
     }
 
@@ -36,11 +36,11 @@ IntegerVector element_frequency(IntegerVector obs) {
 
     for (int i = 0; i < len_obs; ++i) {
         if (obs[i] == obs[i + 1]) {
-            count++;
+            ++count;
         } else {
             freq[pos] = count;
             running_sum += count;
-            pos++;
+            ++pos;
             count = 1;
         }
     }
@@ -57,7 +57,7 @@ IntegerVector singles_array(int start, int n) {
 
     for (int i = 0; i < n; ++i) {
         a[i] = inc;
-        inc++;
+        ++inc;
     }
 
     return a;
@@ -74,7 +74,7 @@ IntegerVector pairs_array(int start, int n) {
         a[j] = inc;
         a[j + 1] = inc;
         j += 2;
-        inc++;
+        ++inc;
     }
 
     return a;
