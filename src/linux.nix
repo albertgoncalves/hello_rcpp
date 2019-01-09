@@ -6,5 +6,6 @@ with pkgs; mkShell {
                     glibcLocales
                   ];
     shellHook = ''
+        alias open=xdg-open
     '';
 }
