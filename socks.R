@@ -11,9 +11,11 @@ main = function() {
 
     sims = n_sims(n, y)
 
-    if (length(sims) > 0)
+    if (length(sims) > 0) {
         hist(sims)
+    }
 }
 
-if (sys.nframe() == 0)
+if (sys.nframe() == 0) {
     main()
+}
