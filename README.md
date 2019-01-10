@@ -24,6 +24,8 @@ $ open Rplots.pdf
 If that's not your style, this works too:
 ```bash
 $ R
+```
+```R
 > source("socks.R")
 > main()
 ```
