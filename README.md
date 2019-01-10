@@ -19,6 +19,7 @@ $ sh shell.sh
 To run the script:
 ```bash
 $ Rscript socks.R
+$ open Rplots.pdf
 ```
 If that's not your style, this works too:
 ```bash
