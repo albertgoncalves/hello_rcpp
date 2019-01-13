@@ -10,7 +10,7 @@ void stl_sort(IntegerVector x) {
 
 // [[Rcpp::export]]
 int count_changes(IntegerVector obs) {
-    int len_obs = obs.size();
+    const int len_obs = obs.size();
     int n_unique = 1;
 
     for (int i = 0; i < (len_obs - 1); ++i) {
@@ -24,10 +24,10 @@ int count_changes(IntegerVector obs) {
 
 // [[Rcpp::export]]
 IntegerVector element_frequency(IntegerVector obs) {
-    int len_obs = obs.size() - 1;
+    const int len_obs = obs.size() - 1;
 
-    stl_sort(obs);
-    int n_unique = count_changes(obs);
+    stl_sort(obs); // side-effects!
+    const int n_unique = count_changes(obs);
     IntegerVector freq(n_unique);
 
     int count = 1;
@@ -65,7 +65,7 @@ IntegerVector singles_array(int start, int n) {
 
 // [[Rcpp::export]]
 IntegerVector pairs_array(int start, int n) {
-    int m = n * 2;
+    const int m = n * 2;
     IntegerVector a(m);
     int inc = start;
     int j = 0;
@@ -83,8 +83,8 @@ IntegerVector pairs_array(int start, int n) {
 // [[Rcpp::export]]
 IntegerVector concat_socks( int n_pairs, int n_singles, int m_pairs
                           , int total) {
-    IntegerVector singles = singles_array(1, n_singles);
-    IntegerVector pairs = pairs_array(n_singles + 1, n_pairs);
+    const IntegerVector singles = singles_array(1, n_singles);
+    const IntegerVector pairs = pairs_array(n_singles + 1, n_pairs);
     IntegerVector socks(total);
 
     for (int i = 0; i < n_singles; ++i) {
@@ -100,14 +100,14 @@ IntegerVector concat_socks( int n_pairs, int n_singles, int m_pairs
 
 // [[Rcpp::export]]
 bool compare_arrays(IntegerVector a, IntegerVector b, bool sort) {
-    int n_a = a.size();
+    const int n_a = a.size();
 
     if (n_a != b.size()) {
         return false;
     }
 
     if (sort) {
-        stl_sort(a);
+        stl_sort(a); // more side-effects!
         stl_sort(b);
     }
 
@@ -122,18 +122,19 @@ bool compare_arrays(IntegerVector a, IntegerVector b, bool sort) {
 
 // [[Rcpp::export]]
 int sim(IntegerVector y) {
-    double theta_pairs = R::runif(10.0, 20.0);
-    int n_pairs = R::rpois(theta_pairs);
+    const double theta_pairs = R::runif(10.0, 20.0);
+    const int n_pairs = R::rpois(theta_pairs);
 
     if (n_pairs != 0) {
-        double theta_ratio = R::rbeta(1.2, 5.0);
-        int n_singles = R::rpois(n_pairs * theta_ratio);
-        int m_pairs = n_pairs * 2;
-        int total = m_pairs + n_singles;
+        const double theta_ratio = R::rbeta(1.2, 5.0);
+        const int n_singles = R::rpois(n_pairs * theta_ratio);
+        const int m_pairs = n_pairs * 2;
+        const int total = m_pairs + n_singles;
 
-        IntegerVector socks = concat_socks(n_pairs, n_singles, m_pairs, total);
-        IntegerVector obs = sample(socks, sum(y), true);
-        IntegerVector freq = element_frequency(obs);
+        const IntegerVector socks =
+            concat_socks(n_pairs, n_singles, m_pairs, total);
+        const IntegerVector obs = sample(socks, sum(y), true);
+        const IntegerVector freq = element_frequency(obs);
 
         if (compare_arrays(freq, y, false)) {
             return total;
