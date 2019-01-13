@@ -1,5 +1,6 @@
 *
 !README.md
+!.lintr
 !.gitignore
 !*.sh
 !*.R
