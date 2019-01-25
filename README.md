@@ -18,12 +18,12 @@ $ sh shell.sh
 ```
 To run the script:
 ```bash
-$ Rscript socks.R
-$ open Rplots.pdf
+[nix-shell:~/hello_rcpp]$ Rscript socks.R
+[nix-shell:~/hello_rcpp]$ open Rplots.pdf
 ```
 If that's not your style, this works too:
 ```bash
-$ R
+[nix-shell:~/hello_rcpp]$ R
 ```
 ```R
 > source("socks.R")
