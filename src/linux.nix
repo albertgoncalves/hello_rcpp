@@ -8,7 +8,7 @@ with pkgs; mkShell {
                     gawk
                   ];
     shellHook = ''
-        alias open=xdg-open
+        alias open="xdg-open"
 
         lintr() {
             R -e "library(lintr); lint('$1')" \
