@@ -1,9 +1,10 @@
 { pkgs ? import <nixpkgs> {} }:
 with pkgs; mkShell {
     name = "Rcpp";
-    buildInputs = [ jdk
-                    gawk
-                  ];
+    buildInputs = [
+        jdk
+        gawk
+    ];
     shellHook = ''
         . ~/miniconda3/etc/profile.d/conda.sh
 

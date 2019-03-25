@@ -1,12 +1,15 @@
 { pkgs ? import <nixpkgs> {} }:
 with pkgs; mkShell {
     name = "Rcpp";
-    buildInputs = [ R
-                    rPackages.Rcpp
-                    rPackages.lintr
-                    glibcLocales
-                    gawk
-                  ];
+    buildInputs = [
+        (with rPackages; [
+            R
+            rPackages.Rcpp
+            rPackages.lintr
+        ])
+        glibcLocales
+        gawk
+    ];
     shellHook = ''
         alias open="xdg-open"
 
